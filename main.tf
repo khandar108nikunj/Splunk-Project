@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_instance" "web_server" {
 	count = 1
-	ami = "ami-01b01bbd08f24c7a8"
+	ami = "ami-0915e09cc7ceee3ab"
 	instance_type = "t2.medium"
 	key_name = "Project"
 	security_groups = [ "project" ]
