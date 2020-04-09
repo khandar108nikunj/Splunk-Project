@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "web_server" {
-	count = 5
+	count = 1
 	ami = "ami-01b01bbd08f24c7a8"
 	instance_type = "t2.medium"
 	key_name = "Project"
