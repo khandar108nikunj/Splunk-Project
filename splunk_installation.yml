@@ -1,0 +1,23 @@
+---
+  - hosts: localhost
+    tasks:
+    - name: Download splunk installation file
+      get_url: 
+        url: https://project-yastee.s3.us-east-2.amazonaws.com/splunk-8.0.3-a6754d8441bf-linux-2.6-amd64.deb
+        dest: /tmp/splunk.deb
+
+    - name: Install splunk
+      tags:
+       - install
+      apt: deb=/tmp/splunk.deb
+
+    - name: Accept license
+      tags:
+       - install
+      shell: /opt/splunk/bin/splunk enable boot-start --accept-license --answer-yes --no-prompt --seed-passwd 66546654
+
+    - name: Enable boot start
+      tags:
+       - install
+      shell: /opt/splunk/bin/splunk start
+
