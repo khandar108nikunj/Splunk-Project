@@ -13,7 +13,7 @@ resource "aws_instance" "c0m1" {
 	user_data = "${data.template_file.userdata_client.rendered}"
 	security_groups = [ "project" ]
 	tags = {
-  	Name="Cluster_master"
+  	Name="C0m1"
   }
 
 }
@@ -25,7 +25,7 @@ resource "aws_instance" "i-1" {
 	user_data = "${data.template_file.userdata_client.rendered}"
 	security_groups = [ "project" ]
 	tags = {
-  	Name="Indexer-1"
+  	Name="Idx-1"
   }
 }
 
@@ -36,7 +36,7 @@ resource "aws_instance" "i-2" {
 	user_data = "${data.template_file.userdata_client.rendered}"
 	security_groups = [ "project" ]
 	tags = {
-  	Name="Indexer-2"
+  	Name="Idx-2"
   }
 
 }
