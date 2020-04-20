@@ -81,7 +81,7 @@ data "aws_eip" "static_ip_idx-1" {
 }
 
 data "aws_eip" "static_ip_idx-2" {
-  public_ip = "	54.89.77.140"
+  public_ip = "54.89.77.140"
 }
 
 resource "aws_eip_association" "static_ip_c0m1" {
