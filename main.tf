@@ -15,10 +15,8 @@ data "template_file" "userdata_client" {
 }
 
 resource "aws_instance" "c0m1" {
-	instance   = aws_instance.c0m1.id
 	ami = "ami-0affd4508a5d2481b"
 	instance_type = "t2.micro"
-	associate_with_private_ip = "3.220.194.182"
 	key_name = "Project"
 	user_data = "${data.template_file.userdata_client.rendered}"
 	security_groups = [ "project" ]
@@ -29,10 +27,8 @@ resource "aws_instance" "c0m1" {
 
 
 resource "aws_instance" "idx-1" {
-	instance   = aws_instance.idx-1.id
 	ami = "ami-0affd4508a5d2481b"
 	instance_type = "t2.micro"
-	associate_with_private_ip = "52.4.66.78"
 	key_name = "Project"
 	user_data = "${data.template_file.userdata_client.rendered}"
 	security_groups = [ "project" ]
@@ -42,10 +38,8 @@ resource "aws_instance" "idx-1" {
 }
 
 resource "aws_instance" "idx-2" {
-	instance   = aws_instance.idx-2.id
 	ami = "ami-0affd4508a5d2481b"
 	instance_type = "t2.micro"
-	associate_with_private_ip = "54.89.77.140"
 	key_name = "Project"
 	user_data = "${data.template_file.userdata_client.rendered}"
 	security_groups = [ "project" ]
@@ -76,4 +70,31 @@ resource "aws_instance" "uf" {
   	Name="UF"
   }
 
+}
+
+data "aws_eip" "static_ip_c0m1" {
+  public_ip = "3.220.194.182"
+}
+
+data "aws_eip" "static_ip_idx-1" {
+  public_ip = "52.4.66.78"
+}
+
+data "aws_eip" "static_ip_idx-2" {
+  public_ip = "	54.89.77.140"
+}
+
+resource "aws_eip_association" "static_ip_c0m1" {
+  instance_id   = aws_instance.c0m1.id
+  allocation_id = data.aws_eip.static_ip_c0m1.id
+}
+
+resource "aws_eip_association" "static_ip_idx-1" {
+  instance_id   = aws_instance.idx-1.id
+  allocation_id = data.aws_eip.static_ip_idx-1.id
+}
+
+resource "aws_eip_association" "static_ip_idx-2" {
+  instance_id   = aws_instance.idx-2.id
+  allocation_id = data.aws_eip.static_ip_idx-2.id
 }
