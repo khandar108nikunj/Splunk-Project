@@ -87,17 +87,14 @@ data "aws_eip" "static_ip_idx-2" {
 resource "aws_eip_association" "static_ip_c0m1" {
   instance_id   = aws_instance.c0m1.id
   allocation_id = data.aws_eip.static_ip_c0m1.id
-  vpc = false	
 }
 
 resource "aws_eip_association" "static_ip_idx-1" {
   instance_id   = aws_instance.idx-1.id
   allocation_id = data.aws_eip.static_ip_idx-1.id
-  vpc = false
 }
 
 resource "aws_eip_association" "static_ip_idx-2" {
   instance_id   = aws_instance.idx-2.id
   allocation_id = data.aws_eip.static_ip_idx-2.id
-  vpc = false
 }
