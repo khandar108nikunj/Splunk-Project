@@ -1,0 +1,65 @@
+pipeline {
+
+    agent any    
+    
+    stages{
+        
+        stage("ssh-host"){
+            steps{
+                sh "ssh ansadm@172.31.92.184 'sh /etc/ansible/test.sh'"
+            }
+        }
+       
+    stages{
+        
+        stage("Install splunk CM"){
+            steps{
+                sh "ssh ansadm@172.31.92.184 'ansible-playbook /etc/ansible/splunk_installation.yml -i /etc/ansible/hosts -l CM'"
+            }
+        }
+    
+        stage("Install splunk ID"){
+            steps{
+                sh "ssh ansadm@172.31.92.184 'ansible-playbook /etc/ansible/splunk_installation.yml -i /etc/ansible/hosts -l ID'"
+            }
+    }
+    
+        stage("Install splunk SH"){
+            steps{
+                sh "ssh ansadm@172.31.92.184 'ansible-playbook /etc/ansible/splunk_installation.yml -i /etc/ansible/hosts -l SH'"
+            }
+        }
+        
+        
+        stage("Cluster-Master config"){
+            steps{
+                sh "ssh ansadm@172.31.92.184 'ansible-playbook /etc/ansible/master_node.yml -i /etc/ansible/hosts -l CM'"
+            }
+        }
+        
+        
+        stage("Indexer config"){
+            steps{
+                sh "ssh ansadm@172.31.92.184 'ansible-playbook /etc/ansible/peer_node.yml -i /etc/ansible/hosts -l ID'"
+            }
+        }
+        
+        stage("Search Head config"){
+            steps{
+                sh "ssh ansadm@172.31.92.184 'ansible-playbook /etc/ansible/search_head.yml -i /etc/ansible/hosts -l SH'"
+            }
+        }
+        
+        stage("App installation"){
+            steps{
+                sh "ssh ansadm@172.31.92.184 'ansible-playbook /etc/ansible/app_installation.yml -i /etc/ansible/hosts -l SH'"
+            }
+        }
+        
+        stage("Universal Forwarder"){
+            steps{
+                sh "ssh ansadm@172.31.92.184 'ansible-playbook /etc/ansible/u_forwarder.yml -i /etc/ansible/hosts -l SH'"
+            }
+        }
+    }    
+}

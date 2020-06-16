@@ -1,0 +1,12 @@
+#!/bin/bash
+sudo su
+sudo yum-config-manager --enable epel
+yum install ansible -y
+useradd -d /home/ansadm -m ansadm
+echo "Crest$123" | passwd --stdin ansadm
+passwd -x -1 ansadm
+
+su - ansadm <<'EOF'
+ssh-keygen -t rsa -f "/home/ansadm/.ssh/id_rsa" -q -N ""
+key=$(cat /home/ansadm/.ssh/id_rsa.pub)
+EOF
