@@ -1,0 +1,27 @@
+---
+- hosts: CM
+  user: ansadm
+  become: yes
+  become_method: sudo
+  tasks:
+  
+  - name: server.conf
+    command: sudo echo "[clustering]">> /opt/splunk/etc/system/local/server.conf
+
+  - name: one  
+    command: sudo echo "mode = master" >> /opt/splunk/etc/system/local/server.conf
+
+  - name: second   
+    command: sudo echo "replication_factor = 2" >> /opt/splunk/etc/system/local/server.conf
+    
+  - name: third  
+    command: sudo echo "pass4SymmKey = admin" >> /opt/splunk/etc/system/local/server.conf
+
+  - name: fourth  
+    command: sudo echo "search_factor = 1" >> /opt/splunk/etc/system/local/server.conf
+
+  - name: master
+    command: sudo /opt/splunk/bin/splunk edit cluster-config -mode master -replication_factor 2 -search_factor 1 -secret admin -auth admin:66546654
+
+  - name: Splunk restart
+    command: sudo /opt/splunk/bin/splunk restart  

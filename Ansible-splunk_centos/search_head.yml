@@ -1,0 +1,24 @@
+---
+- hosts: SH
+  user: ansadm
+  become: yes
+  become_method: sudo
+  tasks:
+ 
+  - name: server.conf
+    shell: sudo echo "[clustering]">> /opt/splunk/etc/system/local/server.conf
+
+  - name: one  
+    shell: sudo echo "mode = searchhead" >> /opt/splunk/etc/system/local/server.conf
+
+  - name: second   
+    shell: sudo echo "master_uri = https://172.31.88.51:8089" >> /opt/splunk/etc/system/local/server.conf
+    
+  - name: third  
+    shell: sudo echo "pass4SymmKey = admin" >> /opt/splunk/etc/system/local/server.conf
+
+  - name: slave
+    command: sudo /opt/splunk/bin/splunk edit cluster-config -mode searchhead -master_uri https://172.31.88.51:8089 -replication_port 9000 -secret admin -auth admin:66546654
+
+  - name: Splunk restart
+    command: sudo /opt/splunk/bin/splunk restart  

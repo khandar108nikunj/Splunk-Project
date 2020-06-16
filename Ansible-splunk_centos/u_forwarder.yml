@@ -1,0 +1,31 @@
+---
+- hosts: UF
+  user: ansadm
+  become: yes
+  become_method: sudo
+
+  tasks:
+
+  - name: wget install
+    command: sudo yum install wget -y
+
+  - name: Downloading forwarder
+    command: wget -O splunkforwarder-8.0.3-a6754d8441bf-Linux-x86_64.tgz 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=8.0.3&product=universalforwarder&filename=splunkforwarder-8.0.3-a6754d8441bf-Linux-x86_64.tgz&wget=true'
+
+  - name: depackge
+    command: sudo tar zxvf splunkforwarder-8.0.3-a6754d8441bf-Linux-x86_64.tgz -C /opt
+
+  - name: config
+    command: sudo /opt/splunkforwarder/bin/splunk enable boot-start --accept-license --answer-yes --no-prompt --seed-passwd 66546654
+
+  - name: config ID-1
+    command: sudo /opt/splunkforwarder/bin/splunk add forward-server 54.90.149.3:9997 -auth admin:66546654
+
+  - name: config ID-2
+    command: sudo /opt/splunkforwarder/bin/splunk add forward-server 54.85.208.96:9997 -auth admin:66546654
+
+  - name: Monitoring
+    command: sudo /opt/splunkforwarder/bin/splunk add monitor /var/log
+
+  - name: Restart
+    command: sudo /opt/splunkforwarder/bin/splunk restart

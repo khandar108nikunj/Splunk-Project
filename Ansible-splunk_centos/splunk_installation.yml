@@ -1,0 +1,21 @@
+---
+- hosts: all
+  user: ansadm
+  become: yes
+  become_method: sudo
+  tasks:
+  
+  - name: wget install
+    command: sudo yum install wget -y
+      
+  - name: Downloading Splunk
+    command: sudo wget -O splunk-8.0.3-a6754d8441bf-Linux-x86_64.tgz 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=8.0.3&product=splunk&filename=splunk-8.0.3-a6754d8441bf-Linux-x86_64.tgz&wget=true'
+    
+  - name: depackge
+    command: sudo tar zxvf splunk-8.0.3-a6754d8441bf-Linux-x86_64.tgz -C /opt
+
+  - name: config
+    command: sudo /opt/splunk/bin/splunk enable boot-start --accept-license --answer-yes --no-prompt --seed-passwd 66546654
+
+  - name: start
+    command: sudo /opt/splunk/bin/splunk start  

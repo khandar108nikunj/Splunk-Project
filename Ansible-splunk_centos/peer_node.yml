@@ -1,0 +1,30 @@
+---
+- hosts: ID
+  user: ansadm
+  become: yes
+  become_method: sudo
+  tasks:
+ 
+  - name: port
+    shell: sudo echo "[replication_port://9000]">> /opt/splunk/etc/system/local/server.conf
+
+  - name: server.conf
+    shell: sudo echo "[clustering]">> /opt/splunk/etc/system/local/server.conf
+
+  - name: one  
+    shell: sudo echo "mode = slave" >> /opt/splunk/etc/system/local/server.conf
+
+  - name: second   
+    shell: sudo echo "master_uri = https://172.31.88.51:8089" >> /opt/splunk/etc/system/local/server.conf
+    
+  - name: third  
+    shell: sudo echo "pass4SymmKey = admin" >> /opt/splunk/etc/system/local/server.conf
+
+  - name: slave
+    command: /opt/splunk/bin/splunk edit cluster-config -mode slave -master_uri https://172.31.88.51:8089 -replication_port 9000 -secret admin -auth admin:66546654
+
+  - name: enable
+    command: /opt/splunk/bin/splunk enable listen 9997 -auth admin:66546654
+
+  - name: Splunk restart
+    command: /opt/splunk/bin/splunk restart  
